@@ -18,25 +18,24 @@ resource "azurerm_container_registry" "ACRmamiluPet" {
   sku                 = "Standard"
 }
 
-resource "azurerm_app_service_plan" "PlanmamiluPet" {
+resource "azurerm_service_plan" "PlanmamiluPet" {
   name                = "servicePlanMamiluPet"
   location            = azurerm_resource_group.RGmamiluPet.location
   resource_group_name = azurerm_resource_group.RGmamiluPet.name
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
+  os_type = "Linux"
+  sku_name = "F1"
 }
 
-resource "azurerm_linux_web_app" "WebApp1" {
-  name                = "WebbApp1"
+resource "azurerm_linux_web_app" "webapp-mamilupet" {
+  name                = "webapp-mamilupet"
   location            = azurerm_resource_group.RGmamiluPet.location
   resource_group_name = azurerm_resource_group.RGmamiluPet.name
-  service_plan_id     = azurerm_app_service_plan.PlanmamiluPet.id
+  service_plan_id     = azurerm_service_plan.PlanmamiluPet.id
   site_config {
-
+    always_on = false
   }
   app_settings = {
     "variable" = "valor1"
  }
 }
+
