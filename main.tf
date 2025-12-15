@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "RGmamiluPet" {
 }
 
 resource "azurerm_container_registry" "ACRmamiluPet" {
-  name                = "ACRmamiluPet"
+  name                = "acrmamiluPet"
   resource_group_name = azurerm_resource_group.RGmamiluPet.name
   location            = azurerm_resource_group.RGmamiluPet.location
   sku                 = "Standard"
@@ -39,3 +39,29 @@ resource "azurerm_linux_web_app" "webapp-mamilupet" {
  }
 }
 
+#segundo webapp2
+resource "azurerm_resource_group" "RGmamiluPet2" {
+  name     = "RGmamiluPet2"
+  location = "East US"
+}
+
+resource "azurerm_service_plan" "PlanmamiluPet2" {
+  name                = "servicePlanMamiluPet2"
+  location            = azurerm_resource_group.RGmamiluPet2.location
+  resource_group_name = azurerm_resource_group.RGmamiluPet2.name
+  os_type = "Linux"
+  sku_name = "F1"
+}
+
+resource "azurerm_linux_web_app" "webapp-mamilupet2" {
+  name                = "webapp-mamilupet2"
+  location            = azurerm_resource_group.RGmamiluPet2.location
+  resource_group_name = azurerm_resource_group.RGmamiluPet2.name
+  service_plan_id     = azurerm_service_plan.PlanmamiluPet2.id
+  site_config {
+    always_on = false
+  }
+  app_settings = {
+    "variable" = "valor1"
+ }
+}
